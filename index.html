@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0756b8" />
+  <title>Relatório de Transferência</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="brand-mark" aria-hidden="true">⇆</div>
+      <div>
+        <span class="eyebrow">UNIGAMES • CONTROLE INTERNO</span>
+        <h1>Relatório de Transferência</h1>
+        <p>Preencha os dados abaixo e gere uma mensagem pronta para enviar pelo WhatsApp.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div class="section-icon" aria-hidden="true">📦</div>
+        <div>
+          <h2>Dados da transferência</h2>
+          <p>Os campos marcados são obrigatórios.</p>
+        </div>
+      </div>
+
+      <form id="transferForm" novalidate>
+        <div class="form-grid stores-grid">
+          <label class="field">
+            <span>Loja de origem</span>
+            <select id="lojaOrigem" required>
+              <option value="">Selecione a loja...</option>
+              <option>Guararapes</option>
+              <option>North Way</option>
+              <option>Patteo</option>
+              <option>Recife</option>
+              <option>RioMar</option>
+              <option>Tacaruna</option>
+              <option>Quiosque</option>
+              <option>Paulista Acessórios</option>
+            </select>
+          </label>
+
+          <button type="button" id="swapButton" class="swap-button" title="Inverter lojas" aria-label="Inverter loja de origem e loja atual">⇆</button>
+
+          <label class="field">
+            <span>Loja atual</span>
+            <select id="lojaAtual" required>
+              <option value="">Selecione a loja...</option>
+              <option>Guararapes</option>
+              <option>North Way</option>
+              <option>Patteo</option>
+              <option>Recife</option>
+              <option>RioMar</option>
+              <option>Tacaruna</option>
+              <option>Quiosque</option>
+              <option>Paulista Acessórios</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-grid product-grid">
+          <label class="field quantity-field">
+            <span>Quantidade</span>
+            <input id="quantidade" type="text" inputmode="numeric" pattern="[0-9]+" placeholder="Ex.: 0" maxlength="10" required />
+            <small>Aceita zero e mantém exatamente o valor digitado.</small>
+          </label>
+
+          <div class="field product-search-field">
+            <label for="produto">Produto</label>
+            <div class="autocomplete" id="productAutocomplete">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="produto" type="text" placeholder="Digite o nome ou uma abreviação, ex.: C75, PS5, JBL..." maxlength="160" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="productSuggestions" required />
+              <button type="button" id="clearProductButton" class="clear-product-button" aria-label="Limpar produto" hidden>×</button>
+              <div id="productSuggestions" class="product-suggestions" role="listbox" hidden></div>
+            </div>
+            <small id="productSearchHint">Pesquise entre 1.346 produtos pelo nome completo, modelo ou abreviação.</small>
+          </div>
+        </div>
+
+        <div class="form-grid two-columns">
+          <label class="field">
+            <span>Motivo</span>
+            <select id="motivo" required>
+              <option value="">Selecione o motivo...</option>
+              <option value="VENDIDO">VENDIDO</option>
+              <option value="REPOSIÇÃO DE ESTOQUE">REPOSIÇÃO DE ESTOQUE</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Transporte</span>
+            <select id="transporte" required>
+              <option value="">Selecione o transporte...</option>
+              <option>Motoboy</option>
+              <option>Carro da empresa</option>
+              <option>Transportadora</option>
+              <option>Retirada em loja</option>
+              <option>Outro</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="formMessage" class="form-message" role="alert" aria-live="polite"></div>
+
+        <div class="form-actions">
+          <button class="whatsapp-button" id="whatsappButton" type="button">
+            <span aria-hidden="true">◉</span> Gerar relatório para WhatsApp
+          </button>
+          <button class="secondary-button" type="reset"><span aria-hidden="true">⌫</span> Limpar campos</button>
+        </div>
+      </form>
+    </section>
+
+    <p class="footer-note">O relatório é apenas gerado para conferência e envio. Nenhuma transferência é registrada automaticamente.</p>
+  </main>
+
+  <dialog id="whatsappDialog">
+    <div class="dialog-header">
+      <div>
+        <span class="eyebrow">PRONTO PARA ENVIO</span>
+        <h3>Relatório de transferência</h3>
+      </div>
+      <button id="closeWhatsappDialogButton" class="icon-button" type="button" aria-label="Fechar">×</button>
+    </div>
+    <div class="dialog-content">
+      <textarea id="whatsappMessage" class="message-preview" rows="11" readonly></textarea>
+      <div class="dialog-actions">
+        <button id="copyWhatsappButton" class="secondary-button" type="button">Copiar relatório</button>
+        <button id="openWhatsappButton" class="whatsapp-button" type="button">Abrir no WhatsApp</button>
+      </div>
+      <div id="copyMessage" class="form-message" aria-live="polite"></div>
+    </div>
+  </dialog>
+
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
