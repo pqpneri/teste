@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#0756b8" name="theme-color"/>
+<title>Transferências Unigames</title>
+<link href="styles.css?v=20260730-email-greeting-13" rel="stylesheet"/>
+</head>
+<body class="is-loading auth-locked">
+<section aria-label="Acesso ao sistema" class="login-screen" id="loginScreen">
+<div class="login-panel">
+<div class="login-brand">
+<div class="login-brand-mark">⇆</div>
+<div><span>UNIGAMES</span><strong>Central de Operações</strong></div>
+</div>
+<div class="login-copy">
+<span class="login-kicker">ACESSO SEGURO</span>
+<h2 id="loginCopyTitle">Bem-vindo</h2>
+<p id="loginCopyText">Entre com seu e-mail e senha.</p>
+</div>
+<div class="auth-mode-tabs">
+<button class="active" id="authTabLogin" type="button">Entrar</button>
+<button id="authTabRegister" type="button">Criar conta</button>
+</div>
+<form class="login-form" id="loginForm" novalidate="">
+<label class="login-field"><span>E-mail</span><div><b>◎</b><input autocomplete="email" id="loginUsername" placeholder="nome@empresa.com" required="" type="email"/></div></label>
+<label class="login-field"><span>Senha</span><div><b>◇</b><input autocomplete="current-password" id="loginPassword" placeholder="Digite sua senha" required="" type="password"/><button aria-label="Mostrar ou ocultar senha" id="toggleLoginPassword" type="button">◉</button></div></label>
+<label class="remember-login"><input checked="" id="rememberLogin" type="checkbox"/><span>Manter conectado neste aparelho</span></label><div aria-live="polite" class="login-message" id="loginMessage" role="alert"></div>
+<button class="login-submit" id="loginSubmit" type="submit"><span>Entrar no sistema</span><b>→</b></button>
+</form>
+<form class="login-form" hidden="" id="registerForm" novalidate="">
+<label class="login-field"><span>Nome</span><div><b>♙</b><input autocomplete="name" id="registerName" placeholder="Nome completo" required="" type="text"/></div></label>
+<label class="login-field"><span>E-mail</span><div><b>◎</b><input autocomplete="email" id="registerEmail" placeholder="nome@empresa.com" required="" type="email"/></div></label>
+<label class="login-field"><span>Senha</span><div><b>◇</b><input autocomplete="new-password" id="registerPassword" minlength="8" placeholder="Mínimo de 8 caracteres" required="" type="password"/></div></label>
+<label class="login-field"><span>Confirmar senha</span><div><b>◇</b><input autocomplete="new-password" id="registerPasswordConfirm" minlength="8" placeholder="Repita a senha" required="" type="password"/></div></label>
+<label class="remember-login register-email-option"><input checked="" id="registerEmailNotifications" type="checkbox"/><span>Receber confirmação e boas-vindas por e-mail</span></label>
+<div aria-live="polite" class="login-message" id="registerMessage" role="alert"></div>
+<button class="login-submit" id="registerSubmit" type="submit">Criar conta</button>
+</form>
+<div class="login-foot"><span>☁</span> Contas e dados protegidos no banco Supabase</div>
+</div>
+</section>
+<div aria-label="Carregando Central de Transferências" aria-live="polite" class="page-splash" id="pageSplash" role="status">
+<div aria-hidden="true" class="splash-orbit orbit-one"></div>
+<div aria-hidden="true" class="splash-orbit orbit-two"></div>
+<div class="splash-content">
+<div aria-hidden="true" class="splash-logo">
+<span class="splash-box box-left">▰</span>
+<span class="splash-arrows">⇆</span>
+<span class="splash-box box-right">▰</span>
+</div>
+<span class="splash-kicker">UNIGAMES</span>
+<h2>Central de Transferências</h2>
+<p>Preparando seu ambiente de trabalho...</p>
+<div aria-hidden="true" class="splash-progress"><span></span></div>
+<small>Controle interno • rápido • organizado</small>
+</div>
+</div>
+<div class="page-bg"><span></span><span></span><span></span></div>
+<main class="app-shell">
+<header class="topbar">
+<div class="brand">
+<div aria-hidden="true" class="brand-mark"><span>⇆</span></div>
+<div>
+<span class="eyebrow">UNIGAMES</span>
+<h1>Central de Operações</h1>
+</div>
+</div>
+<div class="topbar-actions"><div class="topbar-date" id="topbarDate"></div><div class="database-status offline" id="databaseStatus" title="Status do banco de dados"><span></span><b>Conectando</b></div><div class="topbar-user"><span class="topbar-user-avatar" id="topbarUserAvatar">AD</span><div><small id="topbarGreeting">Bem-vindo</small><strong id="topbarUsername">admin</strong></div></div><button class="topbar-auth-button" id="changePasswordButton" title="Alterar senha" type="button">Senha</button><button class="topbar-auth-button logout" id="logoutButton" type="button">Sair</button></div>
+</header>
+<nav aria-label="Navegação principal" class="tabs">
+<button class="tab-button active role-tab" data-permission="transfers" data-tab="formTab" type="button">
+<span aria-hidden="true">＋</span>
+        Transferência
+      </button>
+<button class="tab-button role-tab" data-permission="customers" data-tab="customerTab" type="button">
+<span aria-hidden="true">♙</span>
+        Clientes
+      </button>
+<button class="tab-button role-tab" data-permission="dashboard" data-tab="customerDashboardTab" type="button">
+<span aria-hidden="true">◆</span>
+        Dashboard
+        <span class="tab-count" id="customerDashboardBadge">0</span>
+</button>
+<button class="tab-button role-tab" data-permission="users" data-tab="usersTab" hidden="" type="button">
+<span aria-hidden="true">♟</span>
+        Usuários
+        <span class="tab-count" id="usersCountBadge">0</span>
+</button>
+<button class="tab-button role-tab" data-permission="history" data-tab="historyTab" type="button">
+<span aria-hidden="true">◷</span>
+        Histórico
+        <span class="tab-count" id="historyCountBadge">0</span>
+</button>
+</nav>
+<div aria-live="polite" class="app-message" id="appMessage" role="status"></div>
+<section class="tab-panel active" id="formTab">
+
+<section class="panel">
+<div class="section-heading">
+<div class="section-number">1</div>
+<div>
+<h2>Origem e destino</h2>
+</div>
+</div>
+<form id="transferForm" novalidate="">
+<div class="form-grid stores-grid">
+<label class="field">
+<span>Origem</span>
+<select id="lojaOrigem" required="">
+<option value="">Selecione a loja...</option>
+<option>Guararapes</option><option>North Way</option><option>Patteo</option>
+<option>Recife</option><option>RioMar</option><option>Tacaruna</option>
+<option>Quiosque</option><option>Paulista Acessórios</option>
+</select>
+</label>
+<label class="field">
+<span>Destino</span>
+<select id="lojaAtual" required="">
+<option value="">Selecione a loja...</option>
+<option>Guararapes</option><option>North Way</option><option>Patteo</option>
+<option>Recife</option><option>RioMar</option><option>Tacaruna</option>
+<option>Quiosque</option><option>Paulista Acessórios</option>
+</select>
+</label>
+</div>
+<div class="section-divider"></div>
+<section aria-labelledby="productsTitle" class="products-section">
+<div class="section-heading compact">
+<div class="section-number">2</div>
+<div>
+<h2 id="productsTitle">Produtos</h2>
+</div>
+</div>
+<div class="products-container" id="productsContainer"></div>
+<button class="add-product-button" id="addProductButton" type="button"><span aria-hidden="true">＋</span> Adicionar produto</button>
+</section>
+<div class="section-divider"></div>
+<div class="section-heading compact">
+<div class="section-number">3</div>
+<div>
+<h2>Finalização</h2>
+</div>
+</div>
+<div class="form-grid two-columns">
+<label class="field">
+<span>Motivo</span>
+<select id="motivo" required="">
+<option value="">Selecione o motivo...</option>
+<option value="VENDIDO">VENDIDO</option>
+<option value="REPOSIÇÃO DE ESTOQUE">REPOSIÇÃO DE ESTOQUE</option>
+</select>
+</label>
+<label class="field">
+<span>Transporte</span>
+<select id="transporte" required="">
+<option value="">Selecione o transporte...</option>
+<option>Motoboy</option><option>Carro da empresa</option>
+<option>Transportadora</option><option>Retirada em loja</option><option>Outro</option>
+</select>
+</label>
+</div>
+<div aria-live="polite" class="form-message" id="formMessage" role="alert"></div>
+<div class="form-actions">
+<button class="whatsapp-button" id="whatsappButton" type="button">
+<span aria-hidden="true">◉</span> Gerar WhatsApp
+            </button>
+<button class="secondary-button" type="reset"><span aria-hidden="true">⌫</span> Limpar</button>
+</div>
+</form>
+</section>
+</section>
+<section class="tab-panel" id="customerTab">
+
+<div class="customer-layout">
+<section class="panel customer-form-panel">
+<div class="section-heading">
+<div class="section-number">1</div>
+<div><h2>Cliente</h2></div>
+</div>
+<form id="customerForm" novalidate="">
+<div class="form-grid two-columns">
+<label class="field"><span>Nome</span><input id="customerName" maxlength="100" placeholder="Nome do cliente" required="" type="text"/></label>
+<label class="field"><span>WhatsApp</span><input id="customerPhone" inputmode="tel" maxlength="20" placeholder="(81) 99999-9999" required="" type="tel"/></label>
+</div>
+<input id="customerType" type="hidden" value="Venda de produto"/>
+<input id="customerDate" type="hidden"/>
+<div class="customer-products-heading">
+<div><strong>Produtos</strong></div>
+<span class="product-count-badge" id="customerProductCount">1 produto</span>
+</div>
+<div class="customer-products-container" id="customerProductsContainer"></div>
+<button class="add-customer-product" id="addCustomerProduct" type="button"><span>＋</span> Adicionar produto</button>
+<div class="form-grid two-columns customer-meta-grid">
+<label class="field"><span>Loja</span><select id="customerStore" required=""><option value="">Selecione...</option><option>Guararapes</option><option>North Way</option><option>Patteo</option><option>Recife</option><option>RioMar</option><option>Tacaruna</option><option>Quiosque</option><option>Paulista Acessórios</option></select></label>
+<label class="field"><span>Canal</span><select id="customerChannel" required=""><option>WhatsApp</option><option>Instagram</option><option>Ligação</option><option>Presencial</option><option>Site</option></select></label>
+</div>
+<input id="customerService" type="hidden" value="Atendimento digital"/>
+<input id="customerNotes" type="hidden" value=""/>
+<div aria-live="polite" class="form-message" id="customerFormMessage" role="alert"></div>
+<div class="form-actions customer-actions">
+<button class="whatsapp-button" id="copyCustomerScript" type="button">Copiar script</button>
+<button class="customer-blue-button" id="openCustomerWhatsapp" type="button">Abrir WhatsApp</button>
+<button class="customer-purple-button" id="generateCustomerImage" type="button">Gerar imagem</button>
+</div>
+</form>
+</section>
+<aside class="customer-preview-column">
+<div class="preview-heading"><div><span class="eyebrow">PRÉVIA</span><h2>Cartão do cliente</h2></div><span class="live-pill">● AO VIVO</span></div>
+<article class="customer-card-preview customer-card-compact" id="customerPreviewCard">
+<header class="compact-card-top">
+<div class="compact-brand"><strong>UNIGAMES</strong><span>PROPOSTA DIGITAL</span></div>
+<div class="compact-code"><small>CÓDIGO</small><strong id="previewCode">UNI-0000</strong></div>
+</header>
+<section class="compact-client">
+<div class="customer-avatar" id="previewInitials">CL</div>
+<div class="customer-identity">
+<small id="previewType">Venda de produto</small>
+<h3 id="previewName">NOME DO CLIENTE</h3>
+<p><span id="previewPhone">Telefone não informado</span> • <span id="previewDate">DATA</span></p>
+</div>
+</section>
+<section class="compact-products">
+<div class="compact-section-title"><span>PRODUTOS</span><b id="previewProductsCount">1 item</b></div>
+<div class="preview-products-list compact-products-list" id="previewProductsList"></div>
+</section>
+<section class="compact-total">
+<span>VALOR TOTAL</span>
+<strong id="previewGrandTotal">R$ 0,00</strong>
+<small id="previewPaymentSummary">Condição conforme os itens</small>
+</section>
+<footer class="compact-card-footer">
+<div><small>LOJA</small><strong id="previewStore">Não informada</strong></div>
+<div><small>CANAL</small><strong id="previewChannel">WhatsApp</strong></div>
+<div class="compact-hidden-meta"><span id="previewService">Canal de loja</span><span id="previewNotes">Sem observações.</span></div>
+</footer>
+</article>
+<div class="preview-tip webview-tip">Gere a imagem para compartilhar ou salvar no aplicativo.</div>
+</aside>
+</div>
+</section>
+<section class="tab-panel" id="customerDashboardTab">
+<div class="dashboard-hero-premium">
+<div>
+<span class="eyebrow light">VISÃO COMERCIAL</span>
+<h2>Dashboard de atendimentos</h2>
+<p>Acompanhe todas as propostas e cartões gerados pelo formulário de clientes.</p>
+</div>
+<div aria-hidden="true" class="dashboard-hero-icon">◆</div>
+</div>
+<div class="customer-dashboard-metrics">
+<article><span>Atendimentos</span><strong id="dashTotalCustomers">0</strong><small>relatórios gerados</small></article>
+<article><span>Valor total</span><strong id="dashTotalValue">R$ 0,00</strong><small>em propostas</small></article>
+<article><span>Produtos</span><strong id="dashTotalItems">0</strong><small>itens cadastrados</small></article>
+<article><span>Hoje</span><strong id="dashToday">0</strong><small>novos atendimentos</small></article>
+</div>
+<div class="customer-dashboard-grid">
+<section class="panel dashboard-chart-panel">
+<div class="dashboard-panel-title"><div><span class="eyebrow">RESUMO POR LOJA</span><h3>Participação nos atendimentos</h3></div></div>
+<div class="dash-store-bars" id="dashStoreBars"></div>
+</section>
+<section class="panel dashboard-chart-panel">
+<div class="dashboard-panel-title"><div><span class="eyebrow">FORMAS DE PAGAMENTO</span><h3>Mais utilizadas</h3></div></div>
+<div class="dash-payment-list" id="dashPaymentList"></div>
+</section>
+</div>
+<section class="panel customer-reports-panel">
+<div class="customer-reports-toolbar">
+<div><span class="eyebrow">TODOS OS RELATÓRIOS</span><h3>Atendimentos cadastrados</h3></div>
+<div class="customer-dashboard-filters">
+<input id="customerDashSearch" placeholder="Pesquisar cliente, produto ou código..." type="search"/>
+<select id="customerDashStore"><option value="">Todas as lojas</option><option>Guararapes</option><option>North Way</option><option>Patteo</option><option>Recife</option><option>RioMar</option><option>Tacaruna</option><option>Quiosque</option><option>Paulista Acessórios</option></select>
+</div>
+</div>
+<div class="customer-reports-list" id="customerReportsList"></div>
+<div class="empty-state" hidden="" id="customerReportsEmpty"><div class="empty-icon">◇</div><h3>Nenhum atendimento encontrado</h3><p>Os cartões gerados no formulário aparecerão aqui automaticamente.</p></div>
+</section>
+</section>
+<section class="tab-panel" data-permission="users" id="usersTab"><div class="users-dashboard">
+<div class="users-metrics">
+<article><span>Contas</span><strong id="usersTotal">0</strong><small>cadastradas</small></article>
+<article><span>Ativas</span><strong id="usersActive">0</strong><small>com acesso</small></article>
+<article><span>Administradores</span><strong id="usersAdmins">0</strong><small>acesso total</small></article>
+<article><span>Bloqueadas</span><strong id="usersBlocked">0</strong><small>sem acesso</small></article>
+</div>
+<section class="panel users-panel">
+<div class="users-toolbar">
+<label class="users-search"><span>⌕</span><input id="usersSearch" placeholder="Pesquisar usuário" type="search"/></label>
+<select aria-label="Filtrar por cargo" id="usersRoleFilter"><option value="">Todos os cargos</option><option value="admin">Administrador</option><option value="gestor">Gestor</option><option value="transferencia">Somente Transferência</option><option value="operacional">Operacional</option><option value="comercial">Comercial</option></select>
+</div>
+<div aria-hidden="true" class="users-table-head"><span>Usuário</span><span>Cargo</span><span>Acessos</span><span>Status</span><span></span></div>
+<div class="users-list" id="usersList"></div>
+<div class="empty-state" hidden="" id="usersEmpty"><div class="empty-icon">♙</div><h3>Nenhuma conta encontrada</h3></div>
+</section></div></section>
+<section class="tab-panel" id="historyTab">
+<div class="history-header">
+<div>
+<span class="eyebrow">REGISTROS SALVOS</span>
+<h2>Histórico de relatórios</h2>
+<p>Todos os relatórios são carregados diretamente do banco de dados.</p>
+</div>
+<button class="danger-outline-button" id="clearHistoryButton" type="button">Limpar histórico</button>
+</div>
+<div class="metrics-grid">
+<article class="metric-card"><span>Total de relatórios</span><strong id="totalReports">0</strong><small>registros armazenados</small></article>
+<article class="metric-card"><span>Produtos movimentados</span><strong id="totalProducts">0</strong><small>linhas de produtos</small></article>
+<article class="metric-card"><span>Gerados hoje</span><strong id="reportsToday">0</strong><small>relatórios no dia</small></article>
+</div>
+<section class="panel history-panel">
+<div class="history-toolbar">
+<label class="search-history">
+<span aria-hidden="true">⌕</span>
+<input id="historySearch" placeholder="Pesquisar loja, produto, motivo ou transporte..." type="search">
+</input></label>
+<select aria-label="Filtrar por loja" id="historyStoreFilter">
+<option value="">Todas as lojas</option>
+<option>Guararapes</option><option>North Way</option><option>Patteo</option>
+<option>Recife</option><option>RioMar</option><option>Tacaruna</option>
+<option>Quiosque</option><option>Paulista Acessórios</option>
+</select>
+</div>
+<div class="history-list" id="historyList"></div>
+<div class="empty-state" hidden="" id="historyEmpty">
+<div class="empty-icon">◷</div>
+<h3>Nenhum relatório encontrado</h3>
+<p>Os relatórios gerados aparecerão aqui automaticamente.</p>
+</div>
+</section>
+</section>
+</main>
+<dialog id="whatsappDialog">
+<div class="dialog-header">
+<div><span class="eyebrow">PRONTO PARA ENVIO</span><h3>Relatório de transferência</h3></div>
+<button aria-label="Fechar" class="icon-button" id="closeWhatsappDialogButton" type="button">×</button>
+</div>
+<div class="dialog-content">
+<div class="saved-notice">✓ Relatório salvo automaticamente no histórico</div>
+<textarea class="message-preview" id="whatsappMessage" readonly="" rows="11"></textarea>
+<div class="dialog-actions">
+<button class="secondary-button" id="copyWhatsappButton" type="button">Copiar relatório</button>
+<button class="whatsapp-button" id="openWhatsappButton" type="button">Abrir no WhatsApp</button>
+</div>
+<div aria-live="polite" class="form-message" id="copyMessage"></div>
+</div>
+</dialog>
+<dialog id="historyDialog">
+<div class="dialog-header">
+<div><span class="eyebrow">DETALHES DO REGISTRO</span><h3>Relatório salvo</h3></div>
+<button aria-label="Fechar" class="icon-button" id="closeHistoryDialogButton" type="button">×</button>
+</div>
+<div class="dialog-content">
+<textarea class="message-preview" id="historyMessagePreview" readonly="" rows="11"></textarea>
+<div class="dialog-actions">
+<button class="secondary-button" id="copyHistoryButton" type="button">Copiar relatório</button>
+<button class="whatsapp-button" id="sendHistoryWhatsappButton" type="button">Abrir no WhatsApp</button>
+</div>
+<div aria-live="polite" class="form-message" id="historyCopyMessage"></div>
+</div>
+</dialog>
+<dialog class="image-preview-dialog" id="customerImageDialog">
+<div class="dialog-header">
+<div><span class="eyebrow">CARTÃO GERADO</span><h3>Imagem pronta para compartilhar</h3></div>
+<button aria-label="Fechar" class="icon-button" id="closeCustomerImageDialog" type="button">×</button>
+</div>
+<div class="dialog-content">
+<div class="generated-image-wrap"><img alt="Cartão digital do cliente gerado pelo sistema" id="generatedCustomerImage"/></div>
+<p class="webview-save-help">A imagem foi criada. Para salvar na galeria pelo APK, o WebView precisa ter a ponte nativa Android ativa.</p>
+<div class="dialog-actions image-dialog-actions">
+<button class="whatsapp-button" id="downloadCustomerImage" type="button">Salvar no aparelho</button>
+<button class="customer-blue-button" id="shareCustomerImage" type="button">Compartilhar</button>
+<button class="customer-purple-button" id="openCustomerImage" type="button">Abrir imagem</button>
+</div>
+<div aria-live="polite" class="form-message" id="imageDialogMessage"></div>
+</div>
+</dialog>
+<dialog class="auth-dialog user-edit-dialog" id="userEditDialog">
+<div class="dialog-header"><div><span class="eyebrow">CONTA DE USUÁRIO</span><h3>Editar acesso</h3></div><button aria-label="Fechar" class="icon-button" id="closeUserEditDialog" type="button">×</button></div>
+<form class="dialog-content auth-password-form" id="userEditForm">
+<input id="editUserId" type="hidden"/>
+<label class="field"><span>Nome</span><input id="editUserName" maxlength="120" required="" type="text"/></label>
+<label class="field"><span>E-mail</span><input disabled="" id="editUserEmail" type="email"/></label>
+<label class="field"><span>Cargo</span><select id="editUserRole" required=""><option value="admin">Administrador</option><option value="gestor">Gestor</option><option value="transferencia">Somente Transferência</option><option value="operacional">Operacional</option><option value="comercial">Comercial</option></select></label>
+<div class="role-access-preview"><span>Acesso deste cargo</span><div class="access-chips" id="editUserAccess"></div></div>
+<label class="account-active-row"><input id="editUserActive" type="checkbox"/><span><strong>Conta ativa</strong><small>Desative para bloquear o acesso ao sistema.</small></span></label>
+<div class="form-message" id="userEditMessage" role="alert"></div>
+<div class="dialog-actions"><button class="secondary-button" id="cancelUserEdit" type="button">Cancelar</button><button class="whatsapp-button" type="submit">Salvar alterações</button></div>
+</form></dialog><dialog class="auth-dialog" id="changePasswordDialog">
+<div class="dialog-header">
+<div><span class="eyebrow">SEGURANÇA</span><h3>Alterar senha</h3></div>
+<button aria-label="Fechar" class="icon-button" id="closeChangePassword" type="button">×</button>
+</div>
+<form class="dialog-content auth-password-form" id="changePasswordForm">
+<label class="field"><span>Nova senha</span><input autocomplete="new-password" id="newPassword" minlength="8" required="" type="password"/></label>
+<label class="field"><span>Confirmar nova senha</span><input autocomplete="new-password" id="confirmPassword" minlength="8" required="" type="password"/></label>
+<div class="form-message" id="changePasswordMessage" role="alert"></div>
+<div class="dialog-actions"><button class="secondary-button" id="cancelChangePassword" type="button">Cancelar</button><button class="whatsapp-button" type="submit">Salvar nova senha</button></div>
+</form>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="database-config.js?v=20260730-db-auth-8"></script>
+<script src="database.js?v=20260730-db-auth-10"></script>
+<script src="products.js?v=20260730-db-auth-8"></script>
+<script src="auth.js?v=20260730-db-auth-10"></script>
+<script src="users.js?v=20260730-access-transfer-12"></script>
+<script src="app.js?v=20260730-db-auth-10"></script>
+<script src="swipe-navigation.js?v=20260730-swipe-14"></script>
+</body>
+</html>
